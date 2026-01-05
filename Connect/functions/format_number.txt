@@ -69,7 +69,7 @@ CreateFunction("format_number")
 					#@name 
 					#@desc 
 					nb_decimal_min = Mid ( nb_decimal , 0 , tmp_int1 ) 
-					# Récupération du nombre maxi                                                                                                                                                                                                                                 
+					# Récupération du nombre maxi                          
 					tmp_int1 = tmp_int1 + 1 
 					nb_decimal_max = Mid ( nb_decimal , tmp_int1 , 9 ) 
 				}
@@ -85,11 +85,11 @@ CreateFunction("format_number")
 			output_string = Replace ( output_string , "," , "." ) 
 			output_string = Replace ( output_string , " " , "" ) 
 			output_string = Trim ( output_string ) 
-			# Nettoyer la valeur pour récupérer uniquement la partie numérique                                                                                                                                                                                                                                 
+			# Nettoyer la valeur pour récupérer uniquement la partie numérique                          
 			tmp_float1 = output_string 
 			output_string = tmp_float1 
-			#Step 0 : Suppression de tous les zéros non significatifs                                                                                                                                                                                                                                 
-			# Côté décimal                                                                                                                                                                                                                                 
+			#Step 0 : Suppression de tous les zéros non significatifs                          
+			# Côté décimal                          
 			IfChar(( nb_decimal = "" ) And ( nb_decimal != "_" ) )
 			{
 				tmp_int1 = FindSubstring ( output_string , "." , 0 ) 
@@ -150,7 +150,7 @@ CreateFunction("format_number")
 			}
 			output_string = Mid ( output_string , tmp_int2 , 999 ) 
 			output_string = Trim ( output_string ) 
-			# Si le 1er caractère est le séparateur de décimales, il faut ajouter un 0 devant                                                                                                                                                                                                                                 
+			# Si le 1er caractère est le séparateur de décimales, il faut ajouter un 0 devant                          
 			tmp_str1 = Mid ( output_string , 0 , 1 ) 
 			IfChar(tmp_str1 = "." )
 			{
@@ -161,20 +161,20 @@ CreateFunction("format_number")
 			#@desc 
 			IfChar(nb_decimal_max != "" )
 			{
-				# séparation miliers = décimales
-				#@name 
-				#@desc 
+				tmp_int1 = FindSubstring ( output_string , ".0" , 0 ) 
+				# séparation miliers = décimales 
 				tmp_int1 = FindSubstring ( output_string , "." , 0 ) 
 				IfInt(tmp_int1 > 0 )
 				{
-					# Séparateur de décimales trouvé : il faut séparer la partie entière de la partie décimales
+					# Séparateur de décimales trouvé : il faut séparer la partie entière de la partie décimales 
 					#@name 
 					#@desc 
 					tmp_str_int = Mid ( output_string , 0 , tmp_int1 ) 
 					tmp_int1 += 1 
-					tmp_str_dec = Mid ( output_string , tmp_int1 , 999 ) 
-					# Récupération du chiffre "suivant" pour déterminer comment faire l'arrondi (cas de 0 à 4 ou de 5 à 9)                                            
-					tmp_int1 = nb_decimal_max 
+					# Partie décimale avec ajout d'un 1 artificiel en première position afin de ne pas perdre les éventuels 0 significatifs au début de la partie décimale 
+					tmp_str_dec = "1" + Mid ( output_string , tmp_int1 , 999 ) 
+					# Récupération du chiffre "suivant" pour déterminer comment faire l'arrondi (cas de 0 à 4 ou de 5 à 9)                                                            
+					tmp_int1 = nb_decimal_max + 1 
 					tmp_int2 = Mid ( tmp_str_dec , tmp_int1 , 1 ) 
 					tmp_str_dec = Mid ( tmp_str_dec , 0 , tmp_int1 ) 
 					IfInt(tmp_int2 >= 5 )
@@ -182,10 +182,10 @@ CreateFunction("format_number")
 						tmp_long1 = tmp_str_dec 
 						tmp_long1 += 1 
 						tmp_str1 = tmp_long1 
-						tmp_int3 = GetLength ( tmp_str1 ) 
-						IfInt(tmp_int3 > tmp_int1 )
+						tmp_str2 = Mid ( tmp_str1 , 0 , 1 ) 
+						IfChar(tmp_str2 = "2" )
 						{
-							# Il va falloir incrémenter la partie entière de 1
+							# Saut de 0,1 donc en réalité d'une unité : il faut incrémenter la partie entière de 1 
 							#@name 
 							#@desc 
 							tmp_long2 = tmp_str_int 
@@ -198,15 +198,17 @@ CreateFunction("format_number")
 								tmp_long2 = tmp_long2 - 1 
 							}
 							tmp_str_int = tmp_long2 
-							# Et ne pas récupérer le premier chiffre de la partie décimale                                          
-							tmp_str1 = Mid ( tmp_str1 , 1 , nb_decimal_max ) 
 						}
 						tmp_str_dec = tmp_str1 
 					}
+					# Suppression du premier chiffre ajouté artificiellement
+					#@name 
+					#@desc 
+					tmp_str_dec = Mid ( tmp_str_dec , 1 , 99 ) 
 				}
 				else
 				{
-					# Pas de séparateur de décimales : il s'agit d'un entier donc pas de modification
+					# Pas de séparateur de décimales : il s'agit d'un entier donc pas de modification 
 					#@name 
 					#@desc 
 					tmp_str_int = output_string 
@@ -220,15 +222,10 @@ CreateFunction("format_number")
 				{
 					output_string = tmp_str_int 
 				}
-				#tmp_str1 = "%." + nb_decimal_max + "f"    
-				#tmp_float1 = output_string    
-				#output_string = Format ( tmp_float1 , tmp_str1 )    
-				#@name 
-				#@desc 
 				IfChar(nb_decimal_min != nb_decimal_max )
 				{
 					tmp_int1 = nb_decimal_min 
-					#Suppression des éventuels zeros non significatifs                                                                                                                                                                                                                                 
+					#Suppression des éventuels zeros non significatifs                          
 					tmp_int2 = FindSubstring ( output_string , "." , 0 ) 
 					IfInt(tmp_int2 >= 0 )
 					{
