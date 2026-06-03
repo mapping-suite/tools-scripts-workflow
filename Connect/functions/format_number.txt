@@ -1,6 +1,8 @@
 CreateFunction("format_number")
 {
 	# Tous les paramètres sont sous la forme de chaines de caractères
+	# Possibilité d'utiliser "__NONE__" sur decimal_separator et thousands_separator pour pas mettre de séparateur
+	# Possibilité d'utiliser "_" sur nb-decimal , nb-integer et fixlength s'il ne faut pas les modifier
 	# input_value : valeur avant formatage. Ne doit pas comporter de séparateur de milliers. Le séparateur de décimales doit être le point ou la virgule
 	# output_string : valeur après formatage
 	# nb_decimal : nombre de décimales désirées. Laisser vide pour conserver toutes les chiffres après la virgule. Pour min et max, séparer les 2 valeurs par une virgule (exemple : 2,4 pour 2 décimales minimum et 4 maximum)
