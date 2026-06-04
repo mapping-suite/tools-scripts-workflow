@@ -5,12 +5,12 @@ CreateFunction("format_number")
 	# Possibilité d'utiliser "_" sur nb_decimal , nb_integer, fixlength et align s'il ne faut pas les modifier
 	# input_value : valeur avant formatage. Ne doit pas comporter de séparateur de milliers. Le séparateur de décimales doit être le point ou la virgule
 	# output_string : valeur après formatage
-	# nb_decimal : nombre de décimales désirées. Laisser vide pour conserver toutes les chiffres après la virgule. Pour min et max, séparer les 2 valeurs par une virgule (exemple : 2,4 pour 2 décimales minimum et 4 maximum)
-	# nb_integer : nombre de chiffre minimum dans la partie entière (avant la virgule). La valeur est complétée avec des zéros non significatifs
-	# decimal_separator : caractères à utiliser pour séparer la partie entière de la partie décimale. "__NONE__" pour supprimer le séparateur. Valeur par défaut : "."
-	# thousands_separator : caractères à utiliser pour séparer les groupes de millers dans la partie entière. Valeur par défaut : pas de séparateur.
-	# fixlength : création d'une chaine de caractères de longueur fixe (la valeur est alors complétée par des espaces)
-	# align : en cas de fixlength, permet d'aligner la valeur numérique à droite (right) , à gauche (left) ou centrée (center)
+	# nb_decimal : nombre de décimales désirées. Laisser vide pour conserver toutes les chiffres après la virgule. Pour min et max, séparer les 2 valeurs par une virgule (exemple : "2,4" pour 2 décimales minimum et 4 maximum). Pour garder toutes les décimales : "_"
+	# nb_integer : nombre de chiffre minimum dans la partie entière (avant la virgule). La valeur est complétée avec des zéros non significatifs. Pour ne pas forcer le nombre de chiffres : "_"
+	# decimal_separator : caractères à utiliser pour séparer la partie entière de la partie décimale. "__NONE__" pour ne pas mettre de séparateur. Valeur par défaut : "."
+	# thousands_separator : caractères à utiliser pour séparer les groupes de millers dans la partie entière. "__NONE__" pour ne pas mettre de séparateur. Valeur par défaut : pas de séparateur.
+	# fixlength : création d'une chaine de caractères de longueur fixe (la valeur est alors complétée par des espaces). Si non concerné : "_"
+	# align : en cas de fixlength, permet d'aligner la valeur numérique à droite (right) , à gauche (left) ou centrée (center). Si non concerné : "_"
 	AddParam("input_value", PARAM_STRING, "")
 	AddParam("output_string", PARAM_STRING, "")
 	AddParam("nb_decimal", PARAM_STRING, "")
